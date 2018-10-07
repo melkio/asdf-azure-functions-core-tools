@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+releases_path=https://api.github.com/repos/Azure/azure-functions-core-tools/releases
+cmd="curl -s"
+if [ -n "$GITHUB_API_TOKEN" ]; then
+  cmd="$cmd -H 'Authorization: token $GITHUB_API_TOKEN'"
+fi
+cmd="$cmd $releases_path"
+
+sort_cmd='sort'
+if sort --help | grep -q -- '-V'; then
+  sort_cmd='sort -V'
+fi
+
+# Fetch all tag names, and get only second column. Then remove all unnecesary characters.
+versions=$(eval $cmd | grep 'tag_name' | sed 's/^.*"tag_name": "v\([^"]\+\)",/\1/' | $sort_cmd)
+echo $versions
