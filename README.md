@@ -1,0 +1,1 @@
+# asdf-azure-functions-core-tools
